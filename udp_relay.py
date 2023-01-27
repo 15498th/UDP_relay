@@ -22,7 +22,7 @@ def set_logger(log_level):
     datefmt = '%Y/%m/%d %H:%M:%S'
     logging.basicConfig(level=log_level, format=log_format, datefmt=datefmt)
 
-def try_parse(value, parse=lambda: None, msg=None):
+def try_parse(value, parse=lambda x: x, msg=None):
     '''return parse(value) or raise ValueError if exception happens'''
     try:
         return parse(value)
