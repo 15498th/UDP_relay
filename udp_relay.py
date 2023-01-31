@@ -19,7 +19,7 @@ MODES = ['bind', 'connect', 'bind-relay', 'connect-relay']
 
 
 def set_logger(log_level):
-    log_format = '[%(asctime)s.%(msecs)03d] %(message)s'
+    log_format = '[%(asctime)s] %(message)s'
     datefmt = '%Y/%m/%d %H:%M:%S'
     logging.basicConfig(level=log_level, format=log_format, datefmt=datefmt)
 
