@@ -66,7 +66,10 @@ def read_config(path):
                     ping_msg=PING_MSG)
     c = configparser.ConfigParser(default_section=DEFAULT_SECTION)
     c[DEFAULT_SECTION] = defaults
-    c.read(path)
+    # open explicitly to cause exception on error
+    # configparser will silently ignore non-existing file
+    file = open(path, 'rt')
+    c.read_file(file)
 
     conf = {}
 
