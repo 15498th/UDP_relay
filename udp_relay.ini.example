@@ -1,0 +1,44 @@
+# Example configuration file for udp_relay
+# Can contain three sections, two of which are required:
+#
+# Nonmandatory [common] section for default values and two mandatory
+# section describing settings of two endpoints (sides) this script sends
+# data between, [left] and [right].
+
+# Both [left] and [right] sides can operate in one of following four modes:
+# "bind": listen on given host:port
+# "connect": connect to given host:port
+# "bind-relay": same as bind, but drop packets containing string specified in "ping_msg". Used to listen for another instance of this script.
+# "connect-relay": same as connect, but send message specified in "ping_msg" every "ping_interval" seconds. Used to connect to another instance of this script.
+
+
+# Default values and common options. Nonmandatory.
+# If ommited default values are used
+[common]
+# Size of UDP packets passed to socket recv() call, which effectively
+# limits maximum size of packet that will be passed through unchanged.
+# Default should be usually enough, increase in case of problems.
+udp_max_size = 4096
+# Default IP used in following sections if not specified there
+host = 127.0.0.1
+# How often side in "connect-relay" mode will send ping message
+ping_interval = 60
+# Message send by "connect-relay" and not relayed by "bind-relay" side
+ping_msg = long random phrase that is unlikely to exist in payload
+
+
+# Connection details for two sides of data exchange
+# Each must contain at least "mode" and "port"
+# Note, that in "bind" or "bind-relay" mode using default value "127.0.0.1" for host will make it impossible connections from any other machines on network. Use "0.0.0.0" or external network interface IP to make such connection possible.
+
+# Example: listen on port 8080 on all interfaces...
+[left]
+mode = bind
+host = 0.0.0.0
+port = 8080
+
+# ...and forward packets to 192.168.1.12:8081
+[right]
+mode = connect
+host = 192.168.1.12
+port = 8081
