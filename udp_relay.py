@@ -7,6 +7,7 @@ import select
 import socket
 from typing import Dict
 
+DEFAULT_CONFIG_PATH = 'udp_relay.ini'
 DEFAULT_SECTION = 'common'
 DEFAULT_ADDRESS = '127.0.0.1'
 UDP_MAX_SIZE = 4096
@@ -163,7 +164,9 @@ def run(sockets: Dict[socket.socket, Relay], ping_interval):
 def main():
     description = 'Pipe data between two UDP sockets'
     parser = argparse.ArgumentParser(description=description)
-    parser.add_argument('config', metavar='config', help='Path to configuration file')
+    parser.add_argument('config', nargs='?',
+                        default=DEFAULT_CONFIG_PATH,
+                        help='Path to configuration file')
     parser.add_argument('--verbose', '-v',
                         action='store_true', default=False,
                         help='Show debug output')
@@ -171,6 +174,9 @@ def main():
 
     log_level = logging.DEBUG if args.verbose else logging.INFO
     set_logger(log_level)
+
+    if args.config == DEFAULT_CONFIG_PATH:
+        logging.info(f'Path to configuration file not specified, using default {DEFAULT_CONFIG_PATH}')
 
     try:
         conf = read_config(args.config)
