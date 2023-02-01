@@ -68,8 +68,7 @@ def read_config(path):
     c[DEFAULT_SECTION] = defaults
     # open explicitly to cause exception on error
     # configparser will silently ignore non-existing file
-    file = open(path, 'rt')
-    c.read_file(file)
+    c.read_file(path)
 
     conf = {}
 
@@ -182,7 +181,8 @@ def main():
         logging.info(f'Path to configuration file not specified, using default {DEFAULT_CONFIG_PATH}')
 
     try:
-        conf = read_config(args.config)
+        with open(args.config) as f:
+            conf = read_config(f)
         relays = [Relay(**conf[side]) for side in SIDES]
     except Exception as e:
         logging.error(e)
