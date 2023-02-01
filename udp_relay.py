@@ -77,13 +77,12 @@ def read_config(path):
     for name, parser in parsers.items():
         conf[name] = parse_config_var(c.defaults(), name, parser, DEFAULT_SECTION)
 
-    for name, section in c.items():
-        if name.lower() == c.default_section.lower():
-            continue
-        if name not in SIDES:
-            sides = pprint_list(SIDES)
-            msg = f'Invalid side in section name {name}. Valid sides = {sides}'
-            raise ValueError(msg)
+    for name in SIDES:
+        try:
+            section = c[name]
+        except KeyError as e:
+            msg = f'Required section {name} not found.'
+            raise ValueError(msg) from e
         mode = section.get('mode')
         if mode not in MODES:
             modes = pprint_list(MODES)
