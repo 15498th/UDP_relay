@@ -86,7 +86,7 @@ def read_config(path):
         mode = section.get('mode')
         if mode not in MODES:
             modes = pprint_list(MODES)
-            msg = f'Invalid mode in section name {name}. Valid sides = {sides}'
+            msg = f'Invalid mode in section name {name}. Valid modes = {modes}'
             raise ValueError(msg)
         bind = mode in ['bind', 'bind-relay']
         ping = mode in ['bind-relay', 'connect-relay']
